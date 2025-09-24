@@ -53,12 +53,13 @@ export default function InterestPage() {
 
   return (
     <div className="p-6 max-w-md md:max-w-2xl mx-auto space-y-6">
-      {/* Header: Back (kiri) + Save (kanan) */}
+      {/* Header: Back (pakai ikon <) + Save (tanpa underline) */}
       <div className="flex items-center justify-between">
         <Link
           href="/initial"
-          className="text-sm text-white/90 hover:text-white transition-colors"
+          className="text-sm text-white/90 hover:text-white transition-colors flex items-center gap-2"
         >
+          <svg width="16" height="16" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           Back
         </Link>
 
@@ -103,7 +104,7 @@ export default function InterestPage() {
           ))}
         </div>
 
-        {/* Input (Enter untuk add) */}
+        {/* Input */}
         <input
           className="input w-full"
           placeholder="Add interest"

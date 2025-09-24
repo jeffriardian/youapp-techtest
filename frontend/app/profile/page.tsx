@@ -296,9 +296,9 @@ function ProfilePageInner() {
 
   return (
     <div className="p-6 max-w-3xl mx-auto space-y-6">
-      {/* Header */}
+      {/* Header: Back tanpa underline */}
       <div className="flex items-center justify-between">
-        <Link href="/initial" className="flex items-center gap-2 text-sm underline">
+        <Link href="/initial" className="flex items-center gap-2 text-sm text-white/90 hover:text-white">
           <svg width="16" height="16" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           Back
         </Link>
@@ -306,7 +306,7 @@ function ProfilePageInner() {
         <div className="w-[56px]" />
       </div>
 
-      {/* ==== HERO: kembali ke cover image + handle & avatar overlay (sesuai yang sudah bener) ==== */}
+      {/* HERO cover (avatar kecil DIHAPUS agar match figma) */}
       <div className="card p-0 overflow-hidden">
         <div className="relative h-40 w-full overflow-hidden rounded-2xl bg-[#111827]">
           {form.avatarUrl && (
@@ -318,19 +318,10 @@ function ProfilePageInner() {
             />
           )}
           <div className="absolute inset-0 bg-black/25" />
-          {/* handle di kiri-bawah (overlay) */}
           <div className="absolute left-4 bottom-4 text-white font-semibold drop-shadow">
             {handle}
           </div>
-          {/* avatar bulat di kanan-bawah */}
-          <div className="absolute right-4 bottom-4 h-16 w-16 md:h-20 md:w-20 rounded-full border border-white/10 bg-[#1f2937] overflow-hidden">
-            {form.avatarUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={form.avatarUrl} alt="avatar" className="h-full w-full object-cover" />
-            ) : (
-              <div className="grid h-full w-full place-items-center text-sm text-white/80">V</div>
-            )}
-          </div>
+          {/* avatar kecil di kanan-bawah DIHAPUS */}
         </div>
       </div>
 
@@ -392,7 +383,6 @@ function ProfilePageInner() {
           </div>
         ) : (
           <div className="grid grid-cols-[140px_1fr] gap-4 items-center">
-            {/* Add image button (besar) */}
             <div className="text-mute"></div>
             <div className="flex items-center gap-3">
               <button
@@ -422,7 +412,6 @@ function ProfilePageInner() {
               />
             </div>
 
-            {/* Input styling */}
             <div className="text-neutral-400">Display name:</div>
             <input
               className="input bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/70"
@@ -498,7 +487,18 @@ function ProfilePageInner() {
       <section className="card p-5 rounded-2xl space-y-3">
         <div className="flex items-center justify-between">
           <div className="font-semibold">Interest</div>
-          <Link href="/interest" className="text-sm underline">Edit</Link>
+          {/* ganti teks "Edit" -> icon pensil saja (matching Initial) */}
+          <Link
+            href="/interest"
+            aria-label="Edit interest"
+            className="text-white/70 hover:text-white transition"
+            title="Edit"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+            </svg>
+          </Link>
         </div>
 
         <div className="flex flex-wrap gap-2">
