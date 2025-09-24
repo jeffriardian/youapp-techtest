@@ -53,21 +53,37 @@ export default function InterestPage() {
 
   return (
     <div className="p-6 max-w-md md:max-w-2xl mx-auto space-y-6">
-      {/* Header: Back (kiri) + Save (kanan, gaya link seperti figma) */}
+      {/* Header: Back (kiri) + Save (kanan) */}
       <div className="flex items-center justify-between">
-        <Link href="/initial" className="text-sm underline">Back</Link>
+        <Link
+          href="/initial"
+          className="text-sm text-white/90 hover:text-white transition-colors"
+        >
+          Back
+        </Link>
+
         <h1 className="text-2xl md:text-3xl font-semibold">Interest</h1>
-        <button onClick={onSave} className="text-sm underline">Save</button>
+
+        <button
+          onClick={onSave}
+          className="text-sm text-blue-300 hover:text-blue-200 font-medium transition-colors"
+        >
+          Save
+        </button>
       </div>
 
       {/* Card utama */}
       <section className="card p-6 space-y-4">
-        <div className="text-[13px] font-semibold text-neutral-300">
+        {/* gold text */}
+        <div className="text-[13px] font-semibold text-amber-300">
           Tell everyone about yourself
         </div>
-        <div className="text-lg md:text-xl font-semibold">What interest you?</div>
 
-        {/* Chips (di atas input, sesuai figma) */}
+        <div className="text-lg md:text-xl font-semibold text-white">
+          What interest you?
+        </div>
+
+        {/* Chips */}
         <div className="flex flex-wrap gap-2">
           {list.map((t, i) => (
             <span
@@ -87,7 +103,7 @@ export default function InterestPage() {
           ))}
         </div>
 
-        {/* Input full width (Enter untuk add, tanpa tombol Add) */}
+        {/* Input (Enter untuk add) */}
         <input
           className="input w-full"
           placeholder="Add interest"

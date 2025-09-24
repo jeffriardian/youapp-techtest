@@ -45,7 +45,7 @@ function toIsoDateOrUndefined(input?: string): string | undefined {
   if (!Number.isNaN(d.getTime())) {
     const dd = String(d.getUTCDate()).padStart(2, '0');
     const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
-    const yyyy = d.getUTCFullYear();
+    const yyyy = d.getFullYear();
     return `${yyyy}-${mm}-${dd}T00:00:00.000Z`;
   }
   return undefined;
@@ -302,11 +302,11 @@ function ProfilePageInner() {
           <svg width="16" height="16" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           Back
         </Link>
-        <h1 className="text-3xl font-semibold">{handle.replace(/,$/, '')}</h1>
+        <h1 className="text-3xl font-semibold">{(handle || '').replace(/,$/, '')}</h1>
         <div className="w-[56px]" />
       </div>
 
-      {/* Hero (cover full-bleed dari avatarUrl) */}
+      {/* ==== HERO: kembali ke cover image + handle & avatar overlay (sesuai yang sudah bener) ==== */}
       <div className="card p-0 overflow-hidden">
         <div className="relative h-40 w-full overflow-hidden rounded-2xl bg-[#111827]">
           {form.avatarUrl && (
@@ -318,11 +318,11 @@ function ProfilePageInner() {
             />
           )}
           <div className="absolute inset-0 bg-black/25" />
-
+          {/* handle di kiri-bawah (overlay) */}
           <div className="absolute left-4 bottom-4 text-white font-semibold drop-shadow">
             {handle}
           </div>
-
+          {/* avatar bulat di kanan-bawah */}
           <div className="absolute right-4 bottom-4 h-16 w-16 md:h-20 md:w-20 rounded-full border border-white/10 bg-[#1f2937] overflow-hidden">
             {form.avatarUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -334,13 +334,15 @@ function ProfilePageInner() {
         </div>
       </div>
 
-      {/* About */}
-      <section className="card p-4 rounded-2xl space-y-4">
+      {/* ===== About ===== */}
+      <section className="card p-5 rounded-2xl space-y-4">
         <div className="flex items-center justify-between">
           <div className="font-semibold">About</div>
           {viewMode === 'edit' ? (
             <div className="flex items-center gap-4">
-              <button className="text-sm underline" onClick={onSave}>Save &amp; Update</button>
+              <button className="text-sm text-amber-300 hover:text-amber-200 transition" onClick={onSave}>
+                Save &amp; Update
+              </button>
             </div>
           ) : (
             <button className="text-sm underline" onClick={() => setViewMode('edit')}>Edit</button>
@@ -348,22 +350,54 @@ function ProfilePageInner() {
         </div>
 
         {viewMode === 'view' ? (
-          <div className="space-y-1 text-sm">
-            {form.displayName && <div><b>Display name:</b> {form.displayName}</div>}
-            {form.gender && <div><b>Gender:</b> {form.gender}</div>}
-            {form.birthday && <div><b>Birthday:</b> {fmtBirthdayView(form.birthday)}</div>}
-            <div><b>Horoscope:</b> {form.horoscope || '--'}</div>
-            <div><b>Zodiac:</b> {form.zodiac || '--'}</div>
-            {form.height != null && <div><b>Height:</b> {form.height} cm</div>}
-            {form.weight != null && <div><b>Weight:</b> {form.weight} kg</div>}
+          <div className="space-y-3 text-[15px]">
+            {form.displayName && (
+              <div className="flex gap-3">
+                <span className="w-36 text-neutral-400">Display name:</span>
+                <span className="text-white/95 font-medium">{form.displayName}</span>
+              </div>
+            )}
+            {form.gender && (
+              <div className="flex gap-3">
+                <span className="w-36 text-neutral-400">Gender:</span>
+                <span className="text-white/95 font-medium">{form.gender}</span>
+              </div>
+            )}
+            {form.birthday && (
+              <div className="flex gap-3">
+                <span className="w-36 text-neutral-400">Birthday:</span>
+                <span className="text-white/95 font-medium">{fmtBirthdayView(form.birthday)}</span>
+              </div>
+            )}
+            <div className="flex gap-3">
+              <span className="w-36 text-neutral-400">Horoscope:</span>
+              <span className="text-white/95 font-medium">{form.horoscope || '--'}</span>
+            </div>
+            <div className="flex gap-3">
+              <span className="w-36 text-neutral-400">Zodiac:</span>
+              <span className="text-white/95 font-medium">{form.zodiac || '--'}</span>
+            </div>
+            {form.height != null && (
+              <div className="flex gap-3">
+                <span className="w-36 text-neutral-400">Height:</span>
+                <span className="text-white/95 font-medium">{form.height} cm</span>
+              </div>
+            )}
+            {form.weight != null && (
+              <div className="flex gap-3">
+                <span className="w-36 text-neutral-400">Weight:</span>
+                <span className="text-white/95 font-medium">{form.weight} kg</span>
+              </div>
+            )}
           </div>
         ) : (
-          <div className="grid grid-cols-[140px_1fr] gap-3 items-center">
+          <div className="grid grid-cols-[140px_1fr] gap-4 items-center">
+            {/* Add image button (besar) */}
             <div className="text-mute"></div>
             <div className="flex items-center gap-3">
               <button
                 type="button"
-                className="h-12 w-12 rounded-xl bg-[#1f2937] grid place-items-center border border-white/10 overflow-hidden"
+                className="h-14 w-14 rounded-2xl bg-white/10 grid place-items-center border border-white/15 overflow-hidden hover:bg-white/15 transition"
                 onClick={onPickImage}
                 title="Add image"
               >
@@ -372,13 +406,13 @@ function ProfilePageInner() {
                   <img
                     src={form.avatarUrl}
                     alt="avatar"
-                    className="h-full w-full object-cover rounded-xl block"
+                    className="h-full w-full object-cover rounded-2xl block"
                   />
                 ) : (
-                  '+'
+                  <span className="text-xl text-white/80">+</span>
                 )}
               </button>
-              <span className="text-sm">Add image</span>
+              <span className="text-sm text-white/85">Add image</span>
               <input
                 ref={fileRef}
                 type="file"
@@ -388,9 +422,10 @@ function ProfilePageInner() {
               />
             </div>
 
+            {/* Input styling */}
             <div className="text-neutral-400">Display name:</div>
             <input
-              className="input"
+              className="input bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/70"
               placeholder="Enter name"
               value={form.displayName || ''}
               onChange={(e) => onChange('displayName', e.target.value)}
@@ -398,7 +433,7 @@ function ProfilePageInner() {
 
             <div className="text-neutral-400">Gender:</div>
             <select
-              className="input"
+              className="input bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/70"
               value={form.gender || ''}
               onChange={(e) => onChange('gender', e.target.value)}
             >
@@ -410,7 +445,7 @@ function ProfilePageInner() {
 
             <div className="text-neutral-400">Birthday:</div>
             <input
-              className="input"
+              className="input bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/70"
               placeholder="DD MM YYYY"
               value={form.birthday || ''}
               onChange={(e) => onChange('birthday', maskBirthdayInput(e.target.value))}
@@ -419,15 +454,25 @@ function ProfilePageInner() {
             />
 
             <div className="text-neutral-400">Horoscope:</div>
-            <input className="input" value={derived.horoscope || '--'} readOnly disabled />
+            <input
+              className="input bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white/70"
+              value={derived.horoscope || '--'}
+              readOnly
+              disabled
+            />
 
             <div className="text-neutral-400">Zodiac:</div>
-            <input className="input" value={derived.zodiac || '--'} readOnly disabled />
+            <input
+              className="input bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white/70"
+              value={derived.zodiac || '--'}
+              readOnly
+              disabled
+            />
 
             <div className="text-neutral-400">Height:</div>
             <input
               type="number"
-              className="input"
+              className="input bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/70"
               placeholder="Add height"
               value={form.height ?? ''}
               onChange={(e) =>
@@ -438,7 +483,7 @@ function ProfilePageInner() {
             <div className="text-neutral-400">Weight:</div>
             <input
               type="number"
-              className="input"
+              className="input bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/70"
               placeholder="Add weight"
               value={form.weight ?? ''}
               onChange={(e) =>
@@ -449,8 +494,8 @@ function ProfilePageInner() {
         )}
       </section>
 
-      {/* Interest */}
-      <section className="card p-4 rounded-2xl space-y-3">
+      {/* ===== Interest ===== */}
+      <section className="card p-5 rounded-2xl space-y-3">
         <div className="flex items-center justify-between">
           <div className="font-semibold">Interest</div>
           <Link href="/interest" className="text-sm underline">Edit</Link>
@@ -461,7 +506,9 @@ function ProfilePageInner() {
             <div className="text-sm opacity-80">Add in your interest to find a better match</div>
           ) : (
             (form.interests || []).map((it) => (
-              <span key={it} className="px-3 py-1 rounded-2xl bg-bg text-sm">{it}</span>
+              <span key={it} className="px-3 py-1 rounded-full bg-[#111827] border border-white/10 text-sm text-neutral-200">
+                {it}
+              </span>
             ))
           )}
         </div>
