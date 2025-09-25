@@ -1,118 +1,107 @@
-YouApp – Full-stack Technical Challenge
+============================================================
+=  YOUAPP – FULL-STACK TECHNICAL CHALLENGE                =
+============================================================
 
-Fullstack implementation of the YouApp technical test.
+Full-stack implementation of the YouApp technical test.
 
-Tech Stack
+============================================================
+TECH STACK
 
-Frontend: Next.js 14 (App Router, TS, Tailwind, Axios)
+Frontend : Next.js 14 (App Router, TypeScript, Tailwind, Axios)
+Backend : NestJS (TypeScript, MongoDB/Mongoose, JWT Auth, Swagger)
+Messaging: RabbitMQ (chat notifications)
+Database : MongoDB
+Container: Docker & Docker Compose
 
-Backend: NestJS (TS, MongoDB/Mongoose, JWT Auth, Swagger)
+============================================================
+SERVICES & PORTS
 
-Messaging: RabbitMQ (notifs chat)
+Frontend : http://localhost:3000
 
-Database: MongoDB
+Backend (API) : http://localhost:3001
 
-Containerization: Docker & Docker Compose
+Swagger Docs : http://localhost:3001/api-docs
 
-Services & Ports
+RabbitMQ Mgmt : http://localhost:15672
+ (credentials from .env / docker-compose)
+MongoDB : localhost:27017 (via container)
 
-Frontend: http://localhost:3000
+============================================================
+FEATURES
 
-Backend (API): http://localhost:3001
+AUTHENTICATION
 
-Swagger Docs: http://localhost:3001/api-docs
+Register & Login (JWT based)
 
-RabbitMQ Management: http://localhost:15672
- (user/pass dari .env / compose)
+PROFILE
 
-MongoDB: localhost:27017 (via container)
+Create / Retrieve / Update profile (user is identified from JWT, not request body)
 
-Features
+Auto-calculate Western Horoscope and Chinese Zodiac
 
-Auth: Register & Login (JWT)
+Edit display name, gender, birthday, height, weight, bio, and avatar
 
-Profile
+Add or remove interests
 
-Create / Get / Update (berdasarkan user dari JWT, bukan body)
+MESSAGING
 
-Auto-calc Horoscope (Western) & Chinese Zodiac
+Send and retrieve chat history
 
-Edit display name, gender, birthday, height, weight, bio, avatar
+Publish notifications via RabbitMQ
 
-Add / remove interests
+FILE UPLOADS (AVATAR)
 
-Messaging
+Endpoint : POST /api/files/upload
 
-Kirim & ambil riwayat chat
+Form field : avatar (multipart/form-data)
 
-Publish notifikasi via RabbitMQ
-
-File Uploads (Avatar)
-
-Endpoint: POST /api/files/upload
-
-Form field: avatar (multipart/form-data)
-
-Response contoh:
-
+Example response :
 { "url": "/uploads/1699999999999-123456789.png", "filename": "1699999999999-123456789.png" }
 
+Files are stored inside the backend container at /app/uploads
+On host machine mounted to ./uploads (see docker-compose.yml)
 
-File disimpan di folder /app/uploads di container backend. Di host, dimount ke ./uploads (lihat docker-compose.yml).
-
-Akses gambar dari FE pakai URL absolut backend, contoh:
+Access images from frontend using backend absolute URL, e.g.
 http://localhost:3001/uploads/1699999999999-123456789.png
 
-Quick Start
-# 1) copy env backend
+============================================================
+QUICK START
+
+Copy backend env file
 cp .env.example .env
 
-# 2) build + run semuanya
+Build and run everything
 docker compose up --build
 
+Open in browser:
 
-Buka:
+Frontend : http://localhost:3000
 
-FE: http://localhost:3000
+API Docs : http://localhost:3001/api-docs
 
-API docs: http://localhost:3001/api-docs
+CORS NOTE: Backend enableCors is already configured for origin http://localhost:3000
+.
 
-Catatan CORS: backend sudah enableCors untuk origin http://localhost:3000.
+============================================================
+ENVIRONMENT
 
-Env
+Backend : use .env.example → .env for JWT secret, RabbitMQ credentials, etc.
+Frontend: env is passed from docker-compose
+NEXT_PUBLIC_API_BASE_URL=http://localhost:3001/api
 
-Pakai .env.example → .env untuk backend (JWT secret, RabbitMQ creds, dsb).
+============================================================
+USEFUL SCRIPTS
 
-FE pakai env dari compose: NEXT_PUBLIC_API_BASE_URL=http://localhost:3001/api.
-
-Scripts berguna
-# stop semua
+Stop all services:
 docker compose down
 
-# bersih sekalian volume (wipe database & uploads)
+Stop + remove volumes (wipe database & uploads):
 docker compose down -v
 
-# rebuild kalau ubah dependency
-docker compose up --build
+Rebuild if dependencies change:
+docker compose build --no-cache
 
-Directory Structure (ringkas)
-.
-├─ backend/
-│  ├─ src/
-│  │  ├─ auth/ ...
-│  │  ├─ profiles/ ...
-│  │  └─ main.ts (serve /uploads + endpoint /api/files/upload)
-│  └─ ...
-├─ frontend/
-│  └─ app/ (initial, profile, interest)
-├─ uploads/           # mount untuk file avatar (host)
-├─ docker-compose.yml
-└─ README.md
+============================================================
+DOCUMENTATION VIDEO
 
-Troubleshooting
-
-CORS error saat upload: Pastikan request menuju http://localhost:3001/api/files/upload dan origin FE http://localhost:3000.
-
-Gambar 404 dari FE: Pastikan pakai URL backend (http://localhost:3001/uploads/...), bukan http://localhost:3000/uploads/....
-
-400 “userId must be a string”: Jangan kirim userId di body—profil dikaitkan via JWT (controller baca req.user.sub). Jika swagger contoh masih ada userId, abaikan itu.
+Google Drive: https://drive.google.com/file/d/1PPHTqWZv0IjH0eoRgF41dNX5ypDFVDo7/view?usp=sharing
