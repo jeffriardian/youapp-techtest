@@ -1,10 +1,13 @@
 ============================================================
-=  YOUAPP – FULL-STACK TECHNICAL CHALLENGE                =
+
+YOUAPP – FULL-STACK TECHNICAL CHALLENGE
+
 ============================================================
 
 Full-stack implementation of the YouApp technical test.
 
 ============================================================
+
 TECH STACK
 
 Frontend : Next.js 14 (App Router, TypeScript, Tailwind, Axios)
@@ -14,6 +17,7 @@ Database : MongoDB
 Container: Docker & Docker Compose
 
 ============================================================
+
 SERVICES & PORTS
 
 Frontend : http://localhost:3000
@@ -27,6 +31,7 @@ RabbitMQ Mgmt : http://localhost:15672
 MongoDB : localhost:27017 (via container)
 
 ============================================================
+
 FEATURES
 
 AUTHENTICATION
@@ -65,6 +70,7 @@ Access images from frontend using backend absolute URL, e.g.
 http://localhost:3001/uploads/1699999999999-123456789.png
 
 ============================================================
+
 QUICK START
 
 Copy backend env file
@@ -83,6 +89,7 @@ CORS NOTE: Backend enableCors is already configured for origin http://localhost:
 .
 
 ============================================================
+
 ENVIRONMENT
 
 Backend : use .env.example → .env for JWT secret, RabbitMQ credentials, etc.
@@ -90,6 +97,7 @@ Frontend: env is passed from docker-compose
 NEXT_PUBLIC_API_BASE_URL=http://localhost:3001/api
 
 ============================================================
+
 USEFUL SCRIPTS
 
 Stop all services:
@@ -102,6 +110,7 @@ Rebuild if dependencies change:
 docker compose build --no-cache
 
 ============================================================
+
 DOCUMENTATION VIDEO
 
 Google Drive: https://drive.google.com/file/d/1PPHTqWZv0IjH0eoRgF41dNX5ypDFVDo7/view?usp=sharing
